@@ -123,6 +123,10 @@ export default {
         username: this.user.userId,
         password: this.user.password,
       };
+      // await axios.post(`${process.env.VUE_APP_ALF_URL}alfresco/s/api/login`, loginData)
+      //   .then((res) => {
+      //     console.log(res)
+      //   })
       const base64 = Buffer.from(`${this.user.userId}:${this.user.password}`,
         "utf8"
       ).toString("base64");
@@ -130,6 +134,7 @@ export default {
         .then(async (res) => {
           if (res.status === 200) {
             const data = res.data.data;
+            console.log(data)
             this.$joget.defaults.headers.common["Authorization"] =
               "Bearer " + data.token;
             localStorage.setItem("rtarfUser", JSON.stringify(data));

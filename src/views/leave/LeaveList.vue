@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { jogetService } from '@/helpers/joget-helper'
 export default {
   data() {
     return {
@@ -36,6 +37,9 @@ export default {
     
   },
   methods: {
+    async getMyTasks() {
+      const myTasks = await jogetService.getMyAssignment()
+    }
     
   }
 }

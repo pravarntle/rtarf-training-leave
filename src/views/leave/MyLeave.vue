@@ -2,7 +2,7 @@
   <div>
     <CCard>
       <CCardHeader>
-        <h4>ใบลาของฉัน</h4>
+        <h4>ใบลาของ {{ userdata.fullname }}</h4>
       </CCardHeader>
       <CCardBody>
         <CDataTable
@@ -17,9 +17,11 @@
 </template>
 
 <script>
+import { jogetService } from '@/helpers/joget-helper'
 export default {
   data() {
     return {
+      userdata: JSON.parse(localStorage.getItem('rtarfUser')),
       leaveList: [],
       fields: [
         { key: 'dateCreated', label: 'วันที่ยื่นใบลา' },
@@ -32,10 +34,19 @@ export default {
     }
   },
   created() {
-    
+    this.getLeaveList()
   },
   methods: {
-    
+    async getLeaveList() {
+      const searchData = [
+        {
+          paramName: 'd-7781282-fn_requesterName',
+          paramValue: this.userdata.fullname
+        }
+      ]
+      const leaveList = await jogetService.list('leaveAppTatat', 'list_leaveList', searchData)
+      this.leaveList = leaveList.data.data
+    }
   }
 }
 </script>
