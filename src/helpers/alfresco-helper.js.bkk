@@ -1,0 +1,37 @@
+import axios from 'axios'
+
+export const alfrescoService = {
+  getNode,
+  getNodeChild,
+  deleteNode,
+  createFolder,
+  updateNode,
+}
+
+async function getNode(nodeId, ticket) {
+  return await axios.get(`${process.env.VUE_APP_ALF_URL}alfresco/api/-default-/public/alfresco/versions/1/nodes/${nodeId}?alf_ticket=${ticket}`)
+}
+
+async function getNodeChild(nodeId, ticket) {
+  return await axios.get(`${process.env.VUE_APP_ALF_URL}alfresco/api/-default-/public/alfresco/versions/1/nodes/${nodeId}/children?alf_ticket=${ticket}&include=properties`)
+}
+
+async function deleteNode(nodeId, ticket) {
+  return await axios.delete(`${process.env.VUE_APP_ALF_URL}alfresco/api/-default-/public/alfresco/versions/1/nodes/${nodeId}?alf_ticket=${ticket}`)
+}
+
+async function createFolder(folderName, parentNode, ticket) {
+  const axiosData = {
+    name: folderName,
+    nodeType: 'cm:folder'
+  }
+  return await axios.post(`${process.env.VUE_APP_ALF_URL}alfresco/api/-default-/public/alfresco/versions/1/nodes/${parentNode}/children?alf_ticket=${ticket}`, axiosData, { headers: { 'Content-Type': 'application/json' }})
+}
+
+async function updateNode(nodeId, properties, ticket) {
+  const axiosData = {
+    properties: properties
+  }
+  return await axios.put(`${process.env.VUE_APP_ALF_URL}alfresco/api/-default-/public/alfresco/versions/1/nodes/${nodeId}?alf_ticket=${ticket}`, axiosData, { 
+    headers: { 'Content-Type': 'application/json' } })
+}
